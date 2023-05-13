@@ -2,6 +2,7 @@
 .DS_STORE
 xcuserdata/
 *.pbxuser
+*.xcuserstate
 
 ## Build generated
 DerivedData/
