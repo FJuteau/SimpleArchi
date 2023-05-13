@@ -11,13 +11,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    private var homeCoordinator: HomeCoordinator?
+
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
 
-        window?.rootViewController = HomeViewController()
+        // Start the app flow
+        guard let window else {
+            print("***** SceneDelegate: scene: window should exist")
+            return
+        }
+
+        homeCoordinator = HomeCoordinator(presenter: window)
+        homeCoordinator?.start()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
