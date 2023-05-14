@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct GetCategoriesResponse: Codable {
+    let id: Int
+    let name: String
+}

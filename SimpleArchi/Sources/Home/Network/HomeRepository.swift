@@ -39,16 +39,20 @@ final class HomeRepository: HomeRepositoryType {
     }
 
     func getCategories() async throws -> [HomeViewModel.Category] {
-        return [
-            .init(
-                id: 1,
-                name: "Véhicule"
-            ),
-            .init(
-                id: 2,
-                name: "Mode"
-            )
-        ]
+        let endpoint = GetCategoriesEndpoint()
+
+        guard let urlRequest = requestBuilder.urlRequest(for: endpoint) else {
+            throw NetworkError.invalidURL
+        }
+
+        let result: Result<[GetCategoriesResponse], NetworkError> = await networkService.request(urlRequest: urlRequest)
+
+        switch result {
+        case let .success(response):
+            return response.compactMap { .init(id: $0.id, name: $0.name) }
+        case let .failure(networkError):
+            throw networkError
+        }
     }
 }
 
