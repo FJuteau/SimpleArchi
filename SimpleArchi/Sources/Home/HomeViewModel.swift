@@ -22,12 +22,15 @@ final class HomeViewModel {
     var thumbnailItems: (([ThumbnailItem]) -> Void)?
     var selectedFiltersCount: ((Int) -> Void)?
     var currentFilters: (([Filter]) -> Void)?
-    var errorDescription: ((String) -> Void)?
-    var isLoading: (([Bool]) -> Void)?
+    var errorDescription: ((String?) -> Void)?
+    var isLoading: ((Bool) -> Void)?
 
     // MARK: - Input
 
     func viewDidLoad() {
+        isLoading?(true)
+        defer { isLoading?(false) }
+        
         Task {
             async let itemRequest = repository.getItems()
             async let categoriesRequest = repository.getCategories()
@@ -43,6 +46,7 @@ final class HomeViewModel {
                     currentFilters?(filters)
                 }
                 selectedFiltersCount?(0)
+                errorDescription?(nil)
             } catch {
                 errorDescription?("Something went wrong")
             }
@@ -50,11 +54,10 @@ final class HomeViewModel {
     }
 
     func didTapOnItem(itemId: Int) {
-
     }
 
     func didTapOnFilters() {
-
+        currentFilters?(filters)
     }
 
     func didSelectFilter(filterId: Int) {

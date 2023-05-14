@@ -9,9 +9,12 @@ import UIKit
 
 final class HomeViewController: UIViewController {
 
+    // UI
     private let tableView = UITableView()
-    private let dataSource = HomeTableViewDataSource()
+    private let loadingView = UIView()
+    private let errorView = UIView()
 
+    private let dataSource = HomeTableViewDataSource()
     private let viewModel: HomeViewModel
 
     init(viewModel: HomeViewModel) {
@@ -36,7 +39,35 @@ final class HomeViewController: UIViewController {
 
     // MARK: - Private
 
+    // MARK: Binding
+
+    private func bind(viewModel: HomeViewModel) {
+        viewModel.thumbnailItems = { [weak self] thumbnailItems in
+            DispatchQueue.main.async {
+                self?.updateList(updatedList: thumbnailItems)
+            }
+        }
+        viewModel.isLoading = { [weak self] isLoading in
+            DispatchQueue.main.async {
+                self?.loadingView.isHidden = !isLoading
+            }
+        }
+        viewModel.errorDescription = { [weak self] errorDescription in
+            DispatchQueue.main.async {
+                self?.errorView.isHidden = errorDescription == nil
+            }
+        }
+    }
+
+    // MARK: Layout
+
     private func setupLayout() {
+        setupTableView()
+        setupLoadingView()
+        setupErrorView()
+    }
+
+    private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         let constraints = [
@@ -50,12 +81,30 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .blue
     }
 
-    private func bind(viewModel: HomeViewModel) {
-        viewModel.thumbnailItems = { [weak self] thumbnailItems in
-            DispatchQueue.main.async {
-                self?.updateList(updatedList: thumbnailItems)
-            }
-        }
+    private func setupLoadingView() {
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingView)
+        let constraints = [
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        loadingView.backgroundColor = .green
+    }
+
+    private func setupErrorView() {
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(errorView)
+        let constraints = [
+            errorView.topAnchor.constraint(equalTo: view.topAnchor),
+            errorView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            errorView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        errorView.backgroundColor = .red
     }
 
     private func registerCells() {
