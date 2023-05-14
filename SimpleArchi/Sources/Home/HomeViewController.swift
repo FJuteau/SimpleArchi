@@ -10,7 +10,12 @@ import UIKit
 final class HomeViewController: UIViewController {
 
     // UI
+    private let filterButton: UIButton =  {
+        let button = UIButton()
+        return button
+    }()
     private let tableView = UITableView()
+
     private let loadingView = UIView()
     private let errorView = UIView()
 
@@ -35,6 +40,7 @@ final class HomeViewController: UIViewController {
         registerCells()
         setupLayout()
         viewModel.viewDidLoad()
+        filterButton.addTarget(self, action: #selector(filtersTapped), for: .touchUpInside)
     }
 
     // MARK: - Private
@@ -57,21 +63,45 @@ final class HomeViewController: UIViewController {
                 self?.errorView.isHidden = errorDescription == nil
             }
         }
+        viewModel.currentFilters = { [weak self] filters in
+            guard let self else { return }
+            let filtersViewController = FiltersViewController(filters: filters)
+            self.present(filtersViewController, animated: true)
+        }
+        viewModel.selectedFiltersCount = { [weak self] selectedFiltersCount in
+            DispatchQueue.main.async {
+                self?.filterButton.setTitle("Filtres (\(selectedFiltersCount))", for: .normal)
+            }
+        }
     }
 
     // MARK: Layout
 
     private func setupLayout() {
+        setupFiltersButton()
         setupTableView()
         setupLoadingView()
         setupErrorView()
+    }
+
+    private func setupFiltersButton() {
+        filterButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(filterButton)
+        let constraints = [
+            filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            filterButton.leftAnchor.constraint(equalTo: view.leftAnchor),
+            filterButton.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        tableView.backgroundColor = .yellow
+        view.backgroundColor = .blue
     }
 
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         let constraints = [
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.topAnchor.constraint(equalTo: filterButton.bottomAnchor),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor)
@@ -114,6 +144,12 @@ final class HomeViewController: UIViewController {
     private func updateList(updatedList: [HomeViewModel.ThumbnailItem]) {
         dataSource.list = updatedList
         tableView.reloadData()
+    }
+
+    // MARK: - Actions
+    @objc
+    func filtersTapped() {
+        viewModel.didTapOnFilters()
     }
 }
 

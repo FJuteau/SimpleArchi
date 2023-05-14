@@ -24,6 +24,7 @@ final class DetailCoordinator {
     func start() {
         let viewController = DetailViewController(model: model)
         self.viewController = viewController
+        viewController.title = "Detail produit"
         self.presenter.pushViewController(viewController, animated: true)
     }
 }

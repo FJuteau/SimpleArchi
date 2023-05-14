@@ -31,6 +31,8 @@
 		B87B70F12A112F660095457D /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70F02A112F660095457D /* URLSession+Extension.swift */; };
 		B87B70F42A113DC90095457D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70F32A113DC90095457D /* DetailViewController.swift */; };
 		B87B70F62A113F090095457D /* DetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70F52A113F090095457D /* DetailCoordinator.swift */; };
+		B87B70F92A114BCF0095457D /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70F82A114BCF0095457D /* FiltersViewController.swift */; };
+		B87B70FB2A1156660095457D /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70FA2A1156660095457D /* FilterTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,8 @@
 		B87B70F02A112F660095457D /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
 		B87B70F32A113DC90095457D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		B87B70F52A113F090095457D /* DetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCoordinator.swift; sourceTree = "<group>"; };
+		B87B70F82A114BCF0095457D /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		B87B70FA2A1156660095457D /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +190,7 @@
 		B87B70CE2A0F8FD20095457D /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				B87B70F72A114BA10095457D /* Filters */,
 				B87B70E52A112AD80095457D /* Network */,
 				B87B70D12A0F95580095457D /* Cells */,
 				B81C83272A0F8339000149D9 /* HomeViewController.swift */,
@@ -266,6 +271,15 @@
 				B87B70F52A113F090095457D /* DetailCoordinator.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		B87B70F72A114BA10095457D /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				B87B70F82A114BCF0095457D /* FiltersViewController.swift */,
+				B87B70FA2A1156660095457D /* FilterTableViewCell.swift */,
+			);
+			path = Filters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -410,8 +424,10 @@
 				B87B70D02A0F8FE20095457D /* HomeCoordinator.swift in Sources */,
 				B87B70F42A113DC90095457D /* DetailViewController.swift in Sources */,
 				B87B70ED2A112BC10095457D /* GetCategoriesResponse.swift in Sources */,
+				B87B70FB2A1156660095457D /* FilterTableViewCell.swift in Sources */,
 				B87B70D32A0F96400095457D /* ItemTableViewCell.swift in Sources */,
 				B81C83242A0F8339000149D9 /* AppDelegate.swift in Sources */,
+				B87B70F92A114BCF0095457D /* FiltersViewController.swift in Sources */,
 				B81C83262A0F8339000149D9 /* SceneDelegate.swift in Sources */,
 				B87B70E32A1128B50095457D /* Endpoint.swift in Sources */,
 				B87B70E42A1128B50095457D /* NetworkService.swift in Sources */,

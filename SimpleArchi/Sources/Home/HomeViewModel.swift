@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol HomeViewModelDelegate: class {
+protocol HomeViewModelDelegate: AnyObject {
     func navigateToDetail(model: HomeViewModel.DetailedItem)
 }
 
@@ -52,9 +52,6 @@ final class HomeViewModel {
                 thumbnailItems?(itemsResult.map(mapToThumbnailItem(item:)))
                 filters = categoriesResult.map { .init(category: $0) }
 
-                if let filters {
-                    currentFilters?(filters)
-                }
                 selectedFiltersCount?(0)
                 errorDescription?(nil)
             } catch {

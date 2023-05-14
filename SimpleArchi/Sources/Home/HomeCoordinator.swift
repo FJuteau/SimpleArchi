@@ -20,6 +20,7 @@ final class HomeCoordinator {
     func start() {
         let viewModel = HomeViewModel(delegate: self)
         let viewController = HomeViewController(viewModel: viewModel)
+        viewController.title = "Accueil"
         self.navigationController = UINavigationController(rootViewController: viewController)
         self.presenter.rootViewController = navigationController
     }
