@@ -106,8 +106,8 @@ extension HomeViewModel {
         let imagesURL: ImagesURL
 
         struct ImagesURL {
-            let detail: URL
-            let thumbnail: URL
+            let detail: URL?
+            let thumbnail: URL?
         }
     }
 
@@ -120,7 +120,7 @@ extension HomeViewModel {
         let categoryName: String
         let description: String
         let price: String
-        let imageURL: URL
+        let imageURL: URL?
         let isUrgent: Bool
     }
 
@@ -134,6 +134,6 @@ extension HomeViewModel {
         let description: String
         let price: Double
         let creationDate: Date
-        let imageURL: URL
+        let imageURL: URL?
     }
 }
