@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol HomeViewModelDelegate: class {
+    func navigateToDetail(model: HomeViewModel.DetailedItem)
+}
+
 final class HomeViewModel {
 
     private let repository: HomeRepositoryType
@@ -14,8 +18,14 @@ final class HomeViewModel {
     private var items: [Item]?
     private var filters: [Filter]?
 
-    init(repository: HomeRepositoryType = HomeRepository()) {
+    private weak var delegate: HomeViewModelDelegate?
+
+    init(
+        repository: HomeRepositoryType = HomeRepository(),
+        delegate: HomeViewModelDelegate
+    ) {
         self.repository = repository
+        self.delegate = delegate
     }
 
     // MARK: - Output
@@ -54,9 +64,27 @@ final class HomeViewModel {
     }
 
     func didTapOnItem(itemId: Int) {
+        guard let selectedItem = (items?.first { $0.id == itemId }) else {
+            print("***** HomeViewModel: didTapOnItem: itemId \(itemId) doesn't exist ")
+            return
+        }
+        let detailItem = DetailedItem(
+            id: selectedItem.id,
+            title: selectedItem.title,
+            categoryName: "\(selectedItem.categoryId)",
+            description: selectedItem.description,
+            price: "\(selectedItem.price)",
+            creationDate: selectedItem.creationDate,
+            imageURL: selectedItem.imagesURL.detail
+        )
+        delegate?.navigateToDetail(model: detailItem)
     }
 
     func didTapOnFilters() {
+        guard let filters else {
+            print("***** HomeViewModel: didTapOnFilters: filters is nil")
+            return
+        }
         currentFilters?(filters)
     }
 
@@ -135,7 +163,7 @@ extension HomeViewModel {
         let title: String
         let categoryName: String
         let description: String
-        let price: Double
+        let price: String
         let creationDate: Date
         let imageURL: URL?
     }

@@ -137,5 +137,6 @@ final private class HomeTableViewDataSource: NSObject, UITableViewDataSource {
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("***** HomeViewController: didSelectRowAt: \(dataSource.list[indexPath.row])")
+        viewModel.didTapOnItem(itemId: dataSource.list[indexPath.row].id)
     }
 }
