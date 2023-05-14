@@ -17,7 +17,8 @@ final class HomeCoordinator {
     }
 
     func start() {
-        let viewController = HomeViewController()
+        let viewModel = HomeViewModel()
+        let viewController = HomeViewController(viewModel: viewModel)
         self.viewController = viewController
         self.presenter.rootViewController = viewController
     }

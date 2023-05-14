@@ -12,13 +12,29 @@ final class HomeViewController: UIViewController {
     private let tableView = UITableView()
     private let dataSource = HomeTableViewDataSource()
 
+    private let viewModel: HomeViewModel
+
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+
+        bind(viewModel: viewModel)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = dataSource
         registerCells()
         setupLayout()
+        viewModel.viewDidLoad()
     }
+
+    // MARK: - Private
 
     private func setupLayout() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -34,11 +50,19 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .blue
     }
 
+    private func bind(viewModel: HomeViewModel) {
+        viewModel.thumbnailItems = { [weak self] thumbnailItems in
+            DispatchQueue.main.async {
+                self?.updateList(updatedList: thumbnailItems)
+            }
+        }
+    }
+
     private func registerCells() {
         tableView.register(ItemTableViewCell.self, forCellReuseIdentifier: ItemTableViewCell.classIdentifier)
     }
 
-    private func updateList(updatedList: [String]) {
+    private func updateList(updatedList: [HomeViewModel.ThumbnailItem]) {
         dataSource.list = updatedList
         tableView.reloadData()
     }
@@ -46,17 +70,7 @@ final class HomeViewController: UIViewController {
 
 final private class HomeTableViewDataSource: NSObject, UITableViewDataSource {
 
-    var list: [String] = [
-        "s1",
-        "s2",
-        "s3",
-        "s4",
-        "s5",
-        "s6",
-        "s7",
-        "s8",
-        "s9",
-    ]
+    var list: [HomeViewModel.ThumbnailItem] = []
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         list.count
@@ -66,7 +80,7 @@ final private class HomeTableViewDataSource: NSObject, UITableViewDataSource {
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: ItemTableViewCell.classIdentifier, for: indexPath) as? ItemTableViewCell
         else { return UITableViewCell() }
-        cell.configure(label: list[indexPath.row])
+        cell.configure(label: list[indexPath.row].title)
         return cell
     }
 }
