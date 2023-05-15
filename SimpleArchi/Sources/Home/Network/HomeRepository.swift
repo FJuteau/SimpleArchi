@@ -58,12 +58,15 @@ final class HomeRepository: HomeRepositoryType {
 
 private extension HomeViewModel.Item {
     init?(from response: ItemResponse) {
+        if response.creationDate.dateFromResponse != nil {
+            print("***** HomeViewModel.Item: init?(from response: ItemResponse): response.creationDate is not conform to the expect format")
+        }
         self.id = response.id
         self.categoryId = response.categoryId
         self.title = response.title
         self.description = response.description
         self.price = response.price
-        self.creationDate = Date()
+        self.creationDate = response.creationDate.dateFromResponse ?? Date()
         self.isUrgent = response.isUrgent
         self.imagesURL = ImagesURL(from: response.imagesURL)
     }

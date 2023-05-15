@@ -18,6 +18,12 @@ final class HomeViewModel {
     private var items: [Item]?
     private var filters: [Filter]?
 
+    private var filteredCategoryIds: [Int] {
+        filters?
+            .filter { $0.isSelected }
+            .map { $0.category.id } ?? []
+    }
+
     private weak var delegate: HomeViewModelDelegate?
 
     init(
@@ -48,7 +54,7 @@ final class HomeViewModel {
             do {
                 let (itemsResult, categoriesResult) = try await(itemRequest, categoriesRequest)
 
-                items = itemsResult
+                items = orderItems(items: itemsResult)
                 thumbnailItems?(itemsResult.map(mapToThumbnailItem(item:)))
                 filters = categoriesResult.map { .init(category: $0) }
 
@@ -87,7 +93,9 @@ final class HomeViewModel {
 
     func didValidateFilters(filters: [Filter]) {
         guard let items else { return }
-        thumbnailItems?(items.map(mapToThumbnailItem(item:)))
+        let filteredItems = filteredItems(items: items)
+        let orderedFilteredItems = orderItems(items: filteredItems)
+        thumbnailItems?(orderedFilteredItems.map(mapToThumbnailItem(item:)))
     }
 
     // MARK: - Private
@@ -104,7 +112,24 @@ final class HomeViewModel {
         )
     }
 
-    private func 
+    private func filteredItems(items: [Item]) -> [Item] {
+        let filteredCategoryIds = filteredCategoryIds
+        let filteredItems = items.filter { item in
+            for categoryId in filteredCategoryIds {
+                if item.categoryId == categoryId {
+                    return true
+                }
+            }
+            return false
+        }
+        return filteredItems
+    }
+
+    private func orderItems(items: [Item]) -> [Item] {
+        items.sorted { first, second in
+            first.creationDate > second.creationDate
+        }
+    }
 }
 
 extension HomeViewModel {

@@ -34,7 +34,8 @@
 		B87B70F92A114BCF0095457D /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70F82A114BCF0095457D /* FiltersViewController.swift */; };
 		B87B70FB2A1156660095457D /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70FA2A1156660095457D /* FilterTableViewCell.swift */; };
 		B87B70FF2A118A220095457D /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70FE2A118A220095457D /* Checkbox.swift */; };
-		B87B71022A118C540095457D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B71012A118C540095457D /* File.swift */; };
+		B87B71022A118C540095457D /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B71012A118C540095457D /* Spacing.swift */; };
+		B87B71092A12DA410095457D /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B71082A12DA410095457D /* DateFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +87,8 @@
 		B87B70F82A114BCF0095457D /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		B87B70FA2A1156660095457D /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
 		B87B70FE2A118A220095457D /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
-		B87B71012A118C540095457D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		B87B71012A118C540095457D /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		B87B71082A12DA410095457D /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +218,7 @@
 		B87B70D42A0F96EA0095457D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B87B71072A12DA320095457D /* Date */,
 				B87B70D52A0F96F20095457D /* Extensions */,
 			);
 			path = Helpers;
@@ -307,9 +310,17 @@
 		B87B71002A118C490095457D /* Spacing */ = {
 			isa = PBXGroup;
 			children = (
-				B87B71012A118C540095457D /* File.swift */,
+				B87B71012A118C540095457D /* Spacing.swift */,
 			);
 			path = Spacing;
+			sourceTree = "<group>";
+		};
+		B87B71072A12DA320095457D /* Date */ = {
+			isa = PBXGroup;
+			children = (
+				B87B71082A12DA410095457D /* DateFormatter.swift */,
+			);
+			path = Date;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -442,13 +453,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B87B71092A12DA410095457D /* DateFormatter.swift in Sources */,
 				B87B70DB2A1119D60095457D /* HomeRepository.swift in Sources */,
 				B87B70D72A0F970A0095457D /* UIView+Extension.swift in Sources */,
 				B87B70EF2A112BCE0095457D /* ItemResponse.swift in Sources */,
 				B81C83282A0F8339000149D9 /* HomeViewController.swift in Sources */,
 				B87B70FF2A118A220095457D /* Checkbox.swift in Sources */,
 				B87B70F62A113F090095457D /* DetailCoordinator.swift in Sources */,
-				B87B71022A118C540095457D /* File.swift in Sources */,
+				B87B71022A118C540095457D /* Spacing.swift in Sources */,
 				B87B70E92A112B070095457D /* GetCategoriesEndpoint.swift in Sources */,
 				B87B70E72A112AF80095457D /* GetItemsEndpoint.swift in Sources */,
 				B87B70E12A1128B50095457D /* RequestBuilder.swift in Sources */,
