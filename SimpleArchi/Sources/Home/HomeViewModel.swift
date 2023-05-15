@@ -85,8 +85,9 @@ final class HomeViewModel {
         currentFilters?(filters)
     }
 
-    func didSelectFilter(filterId: Int) {
-
+    func didValidateFilters(filters: [Filter]) {
+        guard let items else { return }
+        thumbnailItems?(items.map(mapToThumbnailItem(item:)))
     }
 
     // MARK: - Private
@@ -102,6 +103,8 @@ final class HomeViewModel {
             isUrgent: item.isUrgent
         )
     }
+
+    private func 
 }
 
 extension HomeViewModel {
@@ -110,9 +113,13 @@ extension HomeViewModel {
         let name: String
     }
 
-    struct Filter {
+    class Filter {
         let category: Category
-        let isSelected: Bool
+        var isSelected: Bool {
+            didSet {
+                hasBeenSelected?(isSelected)
+            }
+        }
 
         init(
             category: Category,
@@ -121,6 +128,8 @@ extension HomeViewModel {
             self.category = category
             self.isSelected = isSelected
         }
+
+        var hasBeenSelected: ((Bool) -> Void)?
     }
 
     struct Item {

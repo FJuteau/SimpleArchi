@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FiltersViewControllerDelegate: AnyObject {
+    func filtersViewControllerDidValidate(_ filtersViewController: FiltersViewController, filters: [HomeViewModel.Filter])
+}
+
 class FiltersViewController: UIViewController {
     // MARK: UI
 
@@ -14,7 +18,13 @@ class FiltersViewController: UIViewController {
 
     private let dataSource = FiltersDataSource()
 
-    init(filters: [HomeViewModel.Filter]) {
+    private weak var delegate: FiltersViewControllerDelegate?
+
+    init(
+        filters: [HomeViewModel.Filter],
+        delegate: FiltersViewControllerDelegate
+    ) {
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
         dataSource.filters = filters
     }
@@ -31,6 +41,11 @@ class FiltersViewController: UIViewController {
         tableView.dataSource = dataSource
         registerCells()
         setupDescriptionLabel()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        delegate?.filtersViewControllerDidValidate(self, filters: dataSource.filters)
     }
 
     func setupDescriptionLabel() {
@@ -62,12 +77,14 @@ final private class FiltersDataSource: NSObject, UITableViewDataSource {
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: FilterTableViewCell.classIdentifier, for: indexPath) as? FilterTableViewCell
         else { return UITableViewCell() }
-//        cell.configure(label: list[indexPath.row].title)
+        cell.configure(filter: filters[indexPath.row])
         return cell
     }
 }
 
 extension FiltersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tappedFilter = dataSource.filters[indexPath.row]
+        tappedFilter.isSelected = !tappedFilter.isSelected
     }
 }

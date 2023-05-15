@@ -21,6 +21,7 @@ final class HomeViewController: UIViewController {
 
     private let dataSource = HomeTableViewDataSource()
     private let viewModel: HomeViewModel
+    private var filtersViewController: FiltersViewController?
 
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -65,7 +66,11 @@ final class HomeViewController: UIViewController {
         }
         viewModel.currentFilters = { [weak self] filters in
             guard let self else { return }
-            let filtersViewController = FiltersViewController(filters: filters)
+            let filtersViewController = FiltersViewController(
+                filters: filters,
+                delegate: self
+            )
+            self.filtersViewController = filtersViewController
             self.present(filtersViewController, animated: true)
         }
         viewModel.selectedFiltersCount = { [weak self] selectedFiltersCount in
@@ -174,5 +179,11 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("***** HomeViewController: didSelectRowAt: \(dataSource.list[indexPath.row])")
         viewModel.didTapOnItem(itemId: dataSource.list[indexPath.row].id)
+    }
+}
+
+extension HomeViewController: FiltersViewControllerDelegate {
+    func filtersViewControllerDidValidate(_ filtersViewController: FiltersViewController, filters: [HomeViewModel.Filter]) {
+        viewModel.didValidateFilters(filters: filters)
     }
 }

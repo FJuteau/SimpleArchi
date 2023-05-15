@@ -9,7 +9,7 @@ import UIKit
 
 class ItemTableViewCell: UITableViewCell {
 
-    let label = UILabel()
+    private let label = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -33,6 +33,8 @@
 		B87B70F62A113F090095457D /* DetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70F52A113F090095457D /* DetailCoordinator.swift */; };
 		B87B70F92A114BCF0095457D /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70F82A114BCF0095457D /* FiltersViewController.swift */; };
 		B87B70FB2A1156660095457D /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70FA2A1156660095457D /* FilterTableViewCell.swift */; };
+		B87B70FF2A118A220095457D /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70FE2A118A220095457D /* Checkbox.swift */; };
+		B87B71022A118C540095457D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B71012A118C540095457D /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		B87B70F52A113F090095457D /* DetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCoordinator.swift; sourceTree = "<group>"; };
 		B87B70F82A114BCF0095457D /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		B87B70FA2A1156660095457D /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
+		B87B70FE2A118A220095457D /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
+		B87B71012A118C540095457D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +173,7 @@
 		B81C83542A0F85A3000149D9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B87B70FC2A1189FD0095457D /* Design system */,
 				B87B70F22A113DAA0095457D /* Detail */,
 				B87B70DC2A1126D80095457D /* Network */,
 				B87B70D42A0F96EA0095457D /* Helpers */,
@@ -280,6 +285,31 @@
 				B87B70FA2A1156660095457D /* FilterTableViewCell.swift */,
 			);
 			path = Filters;
+			sourceTree = "<group>";
+		};
+		B87B70FC2A1189FD0095457D /* Design system */ = {
+			isa = PBXGroup;
+			children = (
+				B87B71002A118C490095457D /* Spacing */,
+				B87B70FD2A118A0C0095457D /* Checkbox */,
+			);
+			path = "Design system";
+			sourceTree = "<group>";
+		};
+		B87B70FD2A118A0C0095457D /* Checkbox */ = {
+			isa = PBXGroup;
+			children = (
+				B87B70FE2A118A220095457D /* Checkbox.swift */,
+			);
+			path = Checkbox;
+			sourceTree = "<group>";
+		};
+		B87B71002A118C490095457D /* Spacing */ = {
+			isa = PBXGroup;
+			children = (
+				B87B71012A118C540095457D /* File.swift */,
+			);
+			path = Spacing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,7 +446,9 @@
 				B87B70D72A0F970A0095457D /* UIView+Extension.swift in Sources */,
 				B87B70EF2A112BCE0095457D /* ItemResponse.swift in Sources */,
 				B81C83282A0F8339000149D9 /* HomeViewController.swift in Sources */,
+				B87B70FF2A118A220095457D /* Checkbox.swift in Sources */,
 				B87B70F62A113F090095457D /* DetailCoordinator.swift in Sources */,
+				B87B71022A118C540095457D /* File.swift in Sources */,
 				B87B70E92A112B070095457D /* GetCategoriesEndpoint.swift in Sources */,
 				B87B70E72A112AF80095457D /* GetItemsEndpoint.swift in Sources */,
 				B87B70E12A1128B50095457D /* RequestBuilder.swift in Sources */,
