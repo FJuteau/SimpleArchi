@@ -14,3 +14,11 @@ extension String {
         return dateFormatter.date(from: "01/16/2023")
     }
 }
+
+extension Date {
+    var formattedDescription: String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy à HH:mm"
+        return dateFormatter.string(from: self)
+    }
+}

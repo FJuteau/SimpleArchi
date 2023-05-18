@@ -39,7 +39,7 @@ class DetailViewController: UIViewController {
             imageView.downloadImage(from: imageURL)
         }
         titleLabel.text = model.title
-        dateLabel.text = model.creationDate.description
+        dateLabel.text = model.creationDate.formattedDescription
         categoryLabel.text = model.categoryName
         priceLabel.text = model.price
         descriptionLabel.text = model.description
