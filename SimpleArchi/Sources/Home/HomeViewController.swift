@@ -85,10 +85,10 @@ final class HomeViewController: UIViewController {
 
     private func setupLayout() {
         setupFiltersButton()
-        setupTableView()
+        setupCollectionView()
         setupLoadingView()
         setupErrorView()
-        view.backgroundColor = .background
+        view.backgroundColor = .secondaryBackground
     }
 
     private func setupFiltersButton() {
@@ -100,9 +100,10 @@ final class HomeViewController: UIViewController {
             filterButton.rightAnchor.constraint(equalTo: view.rightAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+        filterButton.setTitleColor(.titleText, for: .normal)
     }
 
-    private func setupTableView() {
+    private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
         let constraints = [
@@ -112,6 +113,7 @@ final class HomeViewController: UIViewController {
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+        collectionView.backgroundColor = .background
     }
 
     private func setupLoadingView() {
@@ -159,7 +161,7 @@ final class HomeViewController: UIViewController {
     }
 
     private let inset: CGFloat = 10
-    private let itemRatio: CGFloat = 5 / 3
+    private let itemRatio: CGFloat = 11 / 6
 
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

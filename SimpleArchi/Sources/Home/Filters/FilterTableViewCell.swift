@@ -27,8 +27,6 @@ class FilterTableViewCell: UITableViewCell {
         self.filter = filter
         nameLabel.text = filter.category.name
         checkbox.isSelected = filter.isSelected
-//        setupLayout()
-//        backgroundColor = .random()
         bind(filter: filter)
     }
 
@@ -39,6 +37,8 @@ class FilterTableViewCell: UITableViewCell {
     }
 
     private func setupLayout() {
+        selectionStyle = UITableViewCell.SelectionStyle.none
+        backgroundColor = .background
         setupNameLabel()
         setupCheckbox()
     }
@@ -51,6 +51,7 @@ class FilterTableViewCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
         nameLabel.textAlignment = .left
+        nameLabel.textColor = .titleText
     }
 
     private func setupCheckbox() {

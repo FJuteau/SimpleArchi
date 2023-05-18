@@ -22,6 +22,7 @@ final class HomeCoordinator {
         let viewController = HomeViewController(viewModel: viewModel)
         viewController.title = "Accueil"
         self.navigationController = UINavigationController(rootViewController: viewController)
+        navigationController?.navigationBar.backgroundColor = .secondaryBackground
         self.presenter.rootViewController = navigationController
     }
 

@@ -9,10 +9,11 @@ import UIKit
 
 final class ItemCollectionViewCell: UICollectionViewCell {
 
-    private let titleLabel = UILabel()
-    private let priceLabel = UILabel()
-    private let categoryLabel = UILabel()
     private let thumbnailImageView = UIImageView()
+    private let urgentLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let categoryLabel = UILabel()
+    private let priceLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,18 +24,28 @@ final class ItemCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        thumbnailImageView.image = .dowloadImagePlaceholer
+    }
     
     func configure(item: HomeViewModel.ThumbnailItem) {
-        self.titleLabel.text = item.title
         if let imageURL = item.imageURL {
             self.thumbnailImageView.downloadImage(from: imageURL)
         }
+        self.urgentLabel.text = item.isUrgent ? "À saisir !" : nil
+        self.titleLabel.text = item.title
+        self.categoryLabel.text = item.categoryName
+        self.priceLabel.text = item.price
     }
 
     private func setupLayout() {
         setupThumbnailImageView()
+        setupUrgentLabel()
         setupTitleLabel()
         setupCategoryLabel()
+        setupPriceLabel()
     }
 
     private func setupThumbnailImageView() {
@@ -52,13 +63,30 @@ final class ItemCollectionViewCell: UICollectionViewCell {
         thumbnailImageView.layer.masksToBounds = true
     }
 
+    private func setupUrgentLabel() {
+        urgentLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(urgentLabel)
+        let constraints = [
+            urgentLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: Spacing.smaller),
+            urgentLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -Spacing.smaller),
+            urgentLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: Spacing.smaller),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        urgentLabel.textColor = .white
+        urgentLabel.backgroundColor = .fomo
+        urgentLabel.textAlignment = .center
+
+        urgentLabel.layer.cornerRadius = 4
+        urgentLabel.layer.masksToBounds = true
+    }
+
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         let constraints = [
             titleLabel.leftAnchor.constraint(equalTo: leftAnchor),
             titleLabel.rightAnchor.constraint(equalTo: rightAnchor),
-            titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: urgentLabel.bottomAnchor, constant: Spacing.smaller),
         ]
         NSLayoutConstraint.activate(constraints)
         titleLabel.numberOfLines = 3
@@ -72,11 +100,22 @@ final class ItemCollectionViewCell: UICollectionViewCell {
             categoryLabel.leftAnchor.constraint(equalTo: leftAnchor),
             categoryLabel.rightAnchor.constraint(equalTo: rightAnchor),
             categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            categoryLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
         ]
         NSLayoutConstraint.activate(constraints)
-        categoryLabel.numberOfLines = 1
         categoryLabel.textColor = .subtitleText
+    }
+
+    private func setupPriceLabel() {
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(priceLabel)
+        let constraints = [
+            priceLabel.leftAnchor.constraint(equalTo: leftAnchor),
+            priceLabel.rightAnchor.constraint(equalTo: rightAnchor),
+            priceLabel.topAnchor.constraint(greaterThanOrEqualTo: categoryLabel.bottomAnchor),
+            priceLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        priceLabel.textColor = .primary
     }
 }
 

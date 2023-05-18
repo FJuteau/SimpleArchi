@@ -9,7 +9,7 @@ import UIKit
 
 extension UIImageView {
     func downloadImage(from url: URL) {
-        image = UIImage(named: "download_image_placeholder")
+        image = .dowloadImagePlaceholer
 
         DispatchQueue.global().async { [weak self] in
             if let data = try? Data(contentsOf: url) {
@@ -21,4 +21,8 @@ extension UIImageView {
             }
         }
     }
+}
+
+extension UIImage {
+    static var dowloadImagePlaceholer = UIImage(named: "download_image_placeholder")
 }

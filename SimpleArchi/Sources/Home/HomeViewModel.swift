@@ -54,9 +54,10 @@ final class HomeViewModel {
             do {
                 let (itemsResult, categoriesResult) = try await(itemRequest, categoriesRequest)
 
-                items = orderItems(items: itemsResult)
-                thumbnailItems?(itemsResult.map(mapToThumbnailItem(item:)))
+                let orderedItems = orderItems(items: itemsResult)
+                self.items = orderedItems
                 filters = categoriesResult.map { .init(category: $0) }
+                thumbnailItems?(orderedItems.map(mapToThumbnailItem(item:)))
 
                 selectedFiltersCount?(0)
                 errorDescription?(nil)
@@ -74,9 +75,9 @@ final class HomeViewModel {
         let detailItem = DetailedItem(
             id: selectedItem.id,
             title: selectedItem.title,
-            categoryName: "\(selectedItem.categoryId)",
+            categoryName: categoryName(from: selectedItem.categoryId),
             description: selectedItem.description,
-            price: "\(selectedItem.price)",
+            price: PriceFormatter.formatToPrice(from: selectedItem.price),
             creationDate: selectedItem.creationDate,
             imageURL: selectedItem.imagesURL.detail
         )
@@ -96,6 +97,8 @@ final class HomeViewModel {
         let filteredItems = filteredItems(items: items)
         let orderedFilteredItems = orderItems(items: filteredItems)
         thumbnailItems?(orderedFilteredItems.map(mapToThumbnailItem(item:)))
+
+        selectedFiltersCount?(filteredCategoryIds.count)
     }
 
     // MARK: - Private
@@ -104,15 +107,15 @@ final class HomeViewModel {
         return .init(
             id: item.id,
             title: item.title,
-            categoryName: "\(item.categoryId)",
-            price: "\(item.price) €",
+            categoryName: categoryName(from: item.categoryId),
+            price: PriceFormatter.formatToPrice(from: item.price),
             imageURL: item.imagesURL.thumbnail,
             isUrgent: item.isUrgent
         )
     }
 
     private func filteredItems(items: [Item]) -> [Item] {
-        let filteredCategoryIds = filteredCategoryIds
+        guard !filteredCategoryIds.isEmpty else { return items }
         let filteredItems = items.filter { item in
             for categoryId in filteredCategoryIds {
                 if item.categoryId == categoryId {
@@ -125,19 +128,37 @@ final class HomeViewModel {
     }
 
     private func orderItems(items: [Item]) -> [Item] {
-        items.sorted { first, second in
+        let urgentItems = items.filter { $0.isUrgent }
+        let unprioritizedItems = items.filter { !$0.isUrgent }
+
+        var sortedUrgentItems = urgentItems.sorted { first, second in
             first.creationDate > second.creationDate
         }
+        let sortedUnprioritizedItems = unprioritizedItems.sorted { first, second in
+            first.creationDate > second.creationDate
+        }
+        sortedUrgentItems.append(contentsOf: sortedUnprioritizedItems)
+        return sortedUrgentItems
+    }
+
+    private func categoryName(from categoryId: Int) -> String {
+        guard let filter = (filters?.first { $0.category.id == categoryId }) else { return "" }
+
+        return filter.category.name
     }
 }
 
 extension HomeViewModel {
-    struct Category {
+    struct Category: Equatable {
         let id: Int
         let name: String
     }
 
-    class Filter {
+    class Filter: Equatable {
+        static func == (lhs: HomeViewModel.Filter, rhs: HomeViewModel.Filter) -> Bool {
+            lhs.category == rhs.category && lhs.isSelected == rhs.isSelected
+        }
+
         let category: Category
         var isSelected: Bool {
             didSet {
