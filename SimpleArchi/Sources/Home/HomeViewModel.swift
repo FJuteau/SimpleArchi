@@ -105,7 +105,6 @@ final class HomeViewModel {
             id: item.id,
             title: item.title,
             categoryName: "\(item.categoryId)",
-            description: item.description,
             price: "\(item.price) €",
             imageURL: item.imagesURL.thumbnail,
             isUrgent: item.isUrgent
@@ -180,7 +179,6 @@ extension HomeViewModel {
         // Displayed
         let title: String
         let categoryName: String
-        let description: String
         let price: String
         let imageURL: URL?
         let isUrgent: Bool

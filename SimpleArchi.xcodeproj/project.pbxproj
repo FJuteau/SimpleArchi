@@ -36,6 +36,8 @@
 		B87B70FF2A118A220095457D /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B70FE2A118A220095457D /* Checkbox.swift */; };
 		B87B71022A118C540095457D /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B71012A118C540095457D /* Spacing.swift */; };
 		B87B71092A12DA410095457D /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B71082A12DA410095457D /* DateFormatter.swift */; };
+		B87B710C2A1638550095457D /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B710B2A1638550095457D /* UIImageView+Extensions.swift */; };
+		B87B71122A164A1F0095457D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B71112A164A1F0095457D /* Colors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +91,8 @@
 		B87B70FE2A118A220095457D /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		B87B71012A118C540095457D /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		B87B71082A12DA410095457D /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		B87B710B2A1638550095457D /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		B87B71112A164A1F0095457D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +222,7 @@
 		B87B70D42A0F96EA0095457D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B87B710A2A1638410095457D /* Image */,
 				B87B71072A12DA320095457D /* Date */,
 				B87B70D52A0F96F20095457D /* Extensions */,
 			);
@@ -293,6 +298,7 @@
 		B87B70FC2A1189FD0095457D /* Design system */ = {
 			isa = PBXGroup;
 			children = (
+				B87B71102A164A140095457D /* Colors */,
 				B87B71002A118C490095457D /* Spacing */,
 				B87B70FD2A118A0C0095457D /* Checkbox */,
 			);
@@ -321,6 +327,22 @@
 				B87B71082A12DA410095457D /* DateFormatter.swift */,
 			);
 			path = Date;
+			sourceTree = "<group>";
+		};
+		B87B710A2A1638410095457D /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				B87B710B2A1638550095457D /* UIImageView+Extensions.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		B87B71102A164A140095457D /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				B87B71112A164A1F0095457D /* Colors.swift */,
+			);
+			path = Colors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -463,6 +485,7 @@
 				B87B71022A118C540095457D /* Spacing.swift in Sources */,
 				B87B70E92A112B070095457D /* GetCategoriesEndpoint.swift in Sources */,
 				B87B70E72A112AF80095457D /* GetItemsEndpoint.swift in Sources */,
+				B87B710C2A1638550095457D /* UIImageView+Extensions.swift in Sources */,
 				B87B70E12A1128B50095457D /* RequestBuilder.swift in Sources */,
 				B87B70D92A1109930095457D /* HomeViewModel.swift in Sources */,
 				B87B70D02A0F8FE20095457D /* HomeCoordinator.swift in Sources */,
@@ -473,6 +496,7 @@
 				B81C83242A0F8339000149D9 /* AppDelegate.swift in Sources */,
 				B87B70F92A114BCF0095457D /* FiltersViewController.swift in Sources */,
 				B81C83262A0F8339000149D9 /* SceneDelegate.swift in Sources */,
+				B87B71122A164A1F0095457D /* Colors.swift in Sources */,
 				B87B70E32A1128B50095457D /* Endpoint.swift in Sources */,
 				B87B70E42A1128B50095457D /* NetworkService.swift in Sources */,
 				B87B70E22A1128B50095457D /* NetworkError.swift in Sources */,
@@ -650,8 +674,8 @@
 				INFOPLIST_FILE = SimpleArchi/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -678,8 +702,8 @@
 				INFOPLIST_FILE = SimpleArchi/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

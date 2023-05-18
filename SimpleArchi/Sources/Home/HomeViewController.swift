@@ -14,7 +14,7 @@ final class HomeViewController: UIViewController {
         let button = UIButton()
         return button
     }()
-    private let tableView = UITableView()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
     private let loadingView = UIView()
     private let errorView = UIView()
@@ -36,8 +36,9 @@ final class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-        tableView.dataSource = dataSource
+        collectionView.delegate = self
+        collectionView.dataSource = dataSource
+        updateFlowLayout(for: traitCollection)
         registerCells()
         setupLayout()
         viewModel.viewDidLoad()
@@ -87,6 +88,7 @@ final class HomeViewController: UIViewController {
         setupTableView()
         setupLoadingView()
         setupErrorView()
+        view.backgroundColor = .background
     }
 
     private func setupFiltersButton() {
@@ -98,22 +100,18 @@ final class HomeViewController: UIViewController {
             filterButton.rightAnchor.constraint(equalTo: view.rightAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
-        tableView.backgroundColor = .yellow
-        view.backgroundColor = .blue
     }
 
     private func setupTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(collectionView)
         let constraints = [
-            tableView.topAnchor.constraint(equalTo: filterButton.bottomAnchor),
-            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            collectionView.topAnchor.constraint(equalTo: filterButton.bottomAnchor),
+            collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
-        tableView.backgroundColor = .yellow
-        view.backgroundColor = .blue
     }
 
     private func setupLoadingView() {
@@ -142,13 +140,44 @@ final class HomeViewController: UIViewController {
         errorView.backgroundColor = .red
     }
 
+    private var compactColumnFlowLayout: UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let itemWidth: CGFloat = 160
+        let itemHeight: CGFloat = itemWidth * itemRatio
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        return layout
+    }
+
+    private var regularColumnFlowLayout: UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let itemWidth: CGFloat = 300
+        let itemHeight: CGFloat = itemWidth * itemRatio
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        return layout
+    }
+
+    private let inset: CGFloat = 10
+    private let itemRatio: CGFloat = 5 / 3
+
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        updateFlowLayout(for: newCollection)
+    }
+
+    private func updateFlowLayout(for traitCollection: UITraitCollection) {
+        collectionView.collectionViewLayout = traitCollection.horizontalSizeClass == .compact ? compactColumnFlowLayout : regularColumnFlowLayout
+        collectionView.layoutIfNeeded()
+    }
+
     private func registerCells() {
-        tableView.register(ItemTableViewCell.self, forCellReuseIdentifier: ItemTableViewCell.classIdentifier)
+        collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: ItemCollectionViewCell.classIdentifier)
     }
 
     private func updateList(updatedList: [HomeViewModel.ThumbnailItem]) {
         dataSource.list = updatedList
-        tableView.reloadData()
+        collectionView.reloadData()
     }
 
     // MARK: - Actions
@@ -158,25 +187,25 @@ final class HomeViewController: UIViewController {
     }
 }
 
-final private class HomeTableViewDataSource: NSObject, UITableViewDataSource {
+final private class HomeTableViewDataSource: NSObject, UICollectionViewDataSource {
 
     var list: [HomeViewModel.ThumbnailItem] = []
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         list.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: ItemTableViewCell.classIdentifier, for: indexPath) as? ItemTableViewCell
-        else { return UITableViewCell() }
-        cell.configure(label: list[indexPath.row].title)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCollectionViewCell.classIdentifier, for: indexPath) as? ItemCollectionViewCell
+        else { return UICollectionViewCell() }
+        cell.configure(item: list[indexPath.row])
         return cell
     }
 }
 
-extension HomeViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("***** HomeViewController: didSelectRowAt: \(dataSource.list[indexPath.row])")
         viewModel.didTapOnItem(itemId: dataSource.list[indexPath.row].id)
     }
