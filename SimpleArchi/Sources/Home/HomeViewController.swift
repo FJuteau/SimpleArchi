@@ -142,10 +142,13 @@ final class HomeViewController: UIViewController {
         errorView.backgroundColor = .red
     }
 
+    private let inset: CGFloat = 10
+
     private var compactColumnFlowLayout: UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         let itemWidth: CGFloat = 160
+        let itemRatio: CGFloat = 11 / 6
         let itemHeight: CGFloat = itemWidth * itemRatio
         layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
         return layout
@@ -153,15 +156,14 @@ final class HomeViewController: UIViewController {
 
     private var regularColumnFlowLayout: UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         let itemWidth: CGFloat = 300
+        let itemRatio: CGFloat = 3 / 2
         let itemHeight: CGFloat = itemWidth * itemRatio
         layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
         return layout
     }
 
-    private let inset: CGFloat = 10
-    private let itemRatio: CGFloat = 11 / 6
 
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

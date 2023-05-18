@@ -91,6 +91,7 @@ final class ItemCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
         titleLabel.numberOfLines = 3
         titleLabel.textColor = .titleText
+        titleLabel.font = .mediumBold
     }
 
     private func setupCategoryLabel() {
@@ -116,6 +117,7 @@ final class ItemCollectionViewCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
         priceLabel.textColor = .primary
+        priceLabel.font = .mediumBold
     }
 }
 
