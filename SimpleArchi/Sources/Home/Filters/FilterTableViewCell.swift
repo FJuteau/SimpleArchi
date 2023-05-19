@@ -9,10 +9,16 @@ import UIKit
 
 class FilterTableViewCell: UITableViewCell {
 
-    private var filter: HomeViewModel.Filter?
-
+    // MARK: - Properties
+    // MARK: UI
     private let nameLabel = UILabel()
     private let checkbox = Checkbox()
+
+    // MARK: Model
+    private var filter: HomeViewModel.Filter?
+
+    // MARK: - Methods
+    // MARK: Lifecycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,6 +29,8 @@ class FilterTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Configuration
+
     func configure(filter: HomeViewModel.Filter) {
         self.filter = filter
         nameLabel.text = filter.category.name
@@ -30,12 +38,17 @@ class FilterTableViewCell: UITableViewCell {
         bind(filter: filter)
     }
 
+    // MARK: - Private
+    // MARK: Binding
+
     private func bind(filter: HomeViewModel.Filter) {
         filter.hasBeenSelected = { [weak self] isSelected in
             self?.checkbox.isSelected = isSelected
         }
     }
 
+    // MARK: UI
+    
     private func setupLayout() {
         selectionStyle = UITableViewCell.SelectionStyle.none
         backgroundColor = .background

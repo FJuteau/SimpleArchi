@@ -9,9 +9,13 @@ import UIKit
 
 final class DetailCoordinator {
 
+    // MARK: - Properties
     private let presenter: UINavigationController
     private var viewController: UIViewController?
     private let model: HomeViewModel.DetailedItem
+
+    // MARK: - Methods
+    // MARK: Lifecycle
 
     init(
         model: HomeViewModel.DetailedItem,
@@ -21,6 +25,8 @@ final class DetailCoordinator {
         self.presenter = presenter
     }
 
+    // MARK: Navigation
+    
     func start() {
         let viewController = DetailViewController(model: model)
         self.viewController = viewController

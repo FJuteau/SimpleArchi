@@ -12,14 +12,20 @@ protocol FiltersViewControllerDelegate: AnyObject {
 }
 
 class FiltersViewController: UIViewController {
+    // MARK: - Properties
     // MARK: UI
 
     private let tableView = UITableView()
     private let validationButton = UIButton()
 
+    // MARK: Models
     private let dataSource = FiltersDataSource()
 
+    // MARK: Communication
     private weak var delegate: FiltersViewControllerDelegate?
+
+    // MARK: - Methods
+    // MARK: Lifecycle
 
     init(
         filters: [HomeViewModel.Filter],
@@ -49,12 +55,15 @@ class FiltersViewController: UIViewController {
         delegate?.filtersViewControllerDidValidate(self, filters: dataSource.filters)
     }
 
-    func setupLayout() {
+    // MARK: - Private
+    // MARK: UI
+
+    private func setupLayout() {
         setupTableView()
         setupValidationButton()
     }
 
-    func setupTableView() {
+    private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         let constraints = [
@@ -67,7 +76,7 @@ class FiltersViewController: UIViewController {
         tableView.backgroundColor = .background
     }
 
-    func setupValidationButton() {
+    private func setupValidationButton() {
         validationButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(validationButton)
         let constraints = [
@@ -89,12 +98,15 @@ class FiltersViewController: UIViewController {
         tableView.register(FilterTableViewCell.self, forCellReuseIdentifier: FilterTableViewCell.classIdentifier)
     }
 
+    // MARK: Actions
+
     @objc
     private func didTapOnValidationButton() {
         dismiss(animated: true)
     }
 }
 
+// MARK: - Datasource
 final private class FiltersDataSource: NSObject, UITableViewDataSource {
 
     var filters: [HomeViewModel.Filter] = []
@@ -112,6 +124,7 @@ final private class FiltersDataSource: NSObject, UITableViewDataSource {
     }
 }
 
+// MARK: - Delegate
 extension FiltersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tappedFilter = dataSource.filters[indexPath.row]

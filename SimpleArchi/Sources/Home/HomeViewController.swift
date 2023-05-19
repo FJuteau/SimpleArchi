@@ -8,8 +8,9 @@
 import UIKit
 
 final class HomeViewController: UIViewController {
+    // MARK: - Properties
+    // MARK: UI
 
-    // UI
     private let filterButton: UIButton =  {
         let button = UIButton()
         return button
@@ -19,9 +20,16 @@ final class HomeViewController: UIViewController {
     private let loadingView = LoadingView()
     private let errorView = ErrorView()
 
+
+    // MARK: Models
     private let dataSource = HomeTableViewDataSource()
     private let viewModel: HomeViewModel
+
+    // MARK: Communication
     private var filtersViewController: FiltersViewController?
+
+    // MARK: - Methods
+    // MARK: lifecycle
 
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -86,7 +94,11 @@ final class HomeViewController: UIViewController {
         }
     }
 
-    // MARK: Layout
+    // MARK: UI
+
+    private func registerCells() {
+        collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: ItemCollectionViewCell.classIdentifier)
+    }
 
     private func setupLayout() {
         setupFiltersButton()
@@ -152,6 +164,8 @@ final class HomeViewController: UIViewController {
         loadingView.isHidden = true
     }
 
+    // MARK: FlowLayout
+
     private let inset: CGFloat = 10
 
     private var compactColumnFlowLayout: UICollectionViewFlowLayout {
@@ -174,8 +188,6 @@ final class HomeViewController: UIViewController {
         return layout
     }
 
-
-
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         updateFlowLayout(for: newCollection)
     }
@@ -185,22 +197,22 @@ final class HomeViewController: UIViewController {
         collectionView.layoutIfNeeded()
     }
 
-    private func registerCells() {
-        collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: ItemCollectionViewCell.classIdentifier)
-    }
+    // MARK: Helper
 
     private func updateList(updatedList: [HomeViewModel.ThumbnailItem]) {
         dataSource.list = updatedList
         collectionView.reloadData()
     }
 
-    // MARK: - Actions
+    // MARK: Actions
+
     @objc
     func filtersTapped() {
         viewModel.didTapOnFilters()
     }
 }
 
+// MARK: - UICollectionViewDataSource
 final private class HomeTableViewDataSource: NSObject, UICollectionViewDataSource {
 
     var list: [HomeViewModel.ThumbnailItem] = []
@@ -218,12 +230,14 @@ final private class HomeTableViewDataSource: NSObject, UICollectionViewDataSourc
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didTapOnItem(itemId: dataSource.list[indexPath.row].id)
     }
 }
 
+// MARK: - FiltersViewControllerDelegate
 extension HomeViewController: FiltersViewControllerDelegate {
     func filtersViewControllerDidValidate(_ filtersViewController: FiltersViewController, filters: [HomeViewModel.Filter]) {
         viewModel.didValidateFilters(filters: filters)

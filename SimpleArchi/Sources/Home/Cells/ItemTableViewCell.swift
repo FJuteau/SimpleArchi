@@ -9,11 +9,17 @@ import UIKit
 
 final class ItemCollectionViewCell: UICollectionViewCell {
 
+    // MARK: - Properties
+    // MARK: UI
+
     private let thumbnailImageView = UIImageView()
     private let urgentLabel = UILabel()
     private let titleLabel = UILabel()
     private let categoryLabel = UILabel()
     private let priceLabel = UILabel()
+
+    // MARK: - Methods
+    // MARK: Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,7 +35,9 @@ final class ItemCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         thumbnailImageView.image = .dowloadImagePlaceholer
     }
-    
+
+    // MARK: Configuration
+
     func configure(item: HomeViewModel.ThumbnailItem) {
         self.thumbnailImageView.downloadImage(from: item.imageURL)
         self.urgentLabel.text = item.isUrgent ? "À saisir !" : nil
@@ -38,6 +46,9 @@ final class ItemCollectionViewCell: UICollectionViewCell {
         self.priceLabel.text = item.price
     }
 
+    // MARK: - Private
+    // MARK: UI
+    
     private func setupLayout() {
         setupThumbnailImageView()
         setupUrgentLabel()

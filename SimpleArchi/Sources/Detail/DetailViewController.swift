@@ -9,6 +9,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
+    // MARK: - Properties
     // MARK: UI
 
     private let scrollView = UIScrollView()
@@ -21,7 +22,11 @@ class DetailViewController: UIViewController {
     private let descriptionLabel = UILabel()
     private let priceLabel = UILabel()
 
+    // MARK: Models
     private let model: HomeViewModel.DetailedItem
+
+    // MARK: - Methods
+    // MARK: Lifecycle
 
     init(model: HomeViewModel.DetailedItem) {
         self.model = model
@@ -35,7 +40,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
         imageView.downloadImage(from: model.imageURL)
         titleLabel.text = model.title
         dateLabel.text = model.creationDate.formattedDescription
@@ -44,6 +48,9 @@ class DetailViewController: UIViewController {
         descriptionLabel.text = model.description
         setupLayout()
     }
+
+    // MARK: - Private
+    // MARK: UI
 
     private func setupLayout() {
         view.backgroundColor = .secondaryBackground

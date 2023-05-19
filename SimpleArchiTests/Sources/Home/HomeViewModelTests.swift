@@ -99,7 +99,6 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(model.categoryName, "Mode")
         XCTAssertEqual(model.description, "description text")
         XCTAssertEqual(model.price, "99.00 €")
-//        XCTAssertEqual(model.creationDate, Calendar.current.date(byAdding: .day, value: -1, to: Date()))
         XCTAssertEqual(model.imageURL, URL(string: "http://www.google.com"))
     }
 

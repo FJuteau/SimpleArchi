@@ -13,8 +13,11 @@ protocol HomeViewModelDelegate: AnyObject {
 
 final class HomeViewModel {
 
+    // MARK: - Properties
+    // MARK: Dependencies
     private let repository: HomeRepositoryType
 
+    // MARK: Models
     private var items: [Item]?
     private var filters: [Filter]?
 
@@ -24,7 +27,10 @@ final class HomeViewModel {
             .map { $0.category.id } ?? []
     }
 
+    // MARK: - Communication
     private weak var delegate: HomeViewModelDelegate?
+
+    // MARK: Lifecycle
 
     init(
         repository: HomeRepositoryType = HomeRepository(),
@@ -35,6 +41,7 @@ final class HomeViewModel {
     }
 
     // MARK: - Output
+
     var thumbnailItems: (([ThumbnailItem]) -> Void)?
     var selectedFiltersCount: ((Int) -> Void)?
     var currentFilters: (([Filter]) -> Void)?
@@ -94,6 +101,7 @@ final class HomeViewModel {
 
     // MARK: - Private
 
+    // MARK: Helpers
     private func mapToThumbnailItem(item: Item) -> ThumbnailItem {
         .init(
             id: item.id,
@@ -116,6 +124,14 @@ final class HomeViewModel {
             imageURL: item.imagesURL.detail
         )
     }
+
+    private func categoryName(from categoryId: Int) -> String {
+        guard let filter = (filters?.first { $0.category.id == categoryId }) else { return "" }
+
+        return filter.category.name
+    }
+
+    // MARK: Order / Filter
 
     private func filteredItems(items: [Item]) -> [Item] {
         guard !filteredCategoryIds.isEmpty else { return items }
@@ -143,13 +159,9 @@ final class HomeViewModel {
         sortedUrgentItems.append(contentsOf: sortedUnprioritizedItems)
         return sortedUrgentItems
     }
-
-    private func categoryName(from categoryId: Int) -> String {
-        guard let filter = (filters?.first { $0.category.id == categoryId }) else { return "" }
-
-        return filter.category.name
-    }
 }
+
+// MARK: - Model declaration
 
 extension HomeViewModel {
     struct Category: Equatable {

@@ -8,15 +8,19 @@
 import UIKit
 
 final class HomeCoordinator {
-
+    // MARK: - Properties
     private let presenter: UIWindow
     private var navigationController: UINavigationController?
     private var detailCoordinator: DetailCoordinator?
+
+    // MARK: - Methods
+    // MARK: Lifecycle
 
     init(presenter: UIWindow) {
         self.presenter = presenter
     }
 
+    // MARK: Navigation
     func start() {
         let viewModel = HomeViewModel(delegate: self)
         let viewController = HomeViewController(viewModel: viewModel)
@@ -26,7 +30,7 @@ final class HomeCoordinator {
         self.presenter.rootViewController = navigationController
     }
 
-    internal func navigateToDetailPage(model: HomeViewModel.DetailedItem) {
+    fileprivate func navigateToDetailPage(model: HomeViewModel.DetailedItem) {
         guard let navigationController else {
             print("***** HomeCoordinator: navigateToDetail: navigationController is nil")
             return
@@ -39,6 +43,7 @@ final class HomeCoordinator {
     }
 }
 
+// MARK: - HomeViewModelDelegate
 extension HomeCoordinator: HomeViewModelDelegate {
     func navigateToDetail(model: HomeViewModel.DetailedItem) {
         navigateToDetailPage(model: model)
