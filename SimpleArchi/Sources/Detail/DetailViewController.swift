@@ -35,9 +35,8 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let imageURL = model.imageURL {
-            imageView.downloadImage(from: imageURL)
-        }
+
+        imageView.downloadImage(from: model.imageURL)
         titleLabel.text = model.title
         dateLabel.text = model.creationDate.formattedDescription
         categoryLabel.text = model.categoryName

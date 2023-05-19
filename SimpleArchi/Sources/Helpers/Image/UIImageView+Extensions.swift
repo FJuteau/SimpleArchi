@@ -8,8 +8,10 @@
 import UIKit
 
 extension UIImageView {
-    func downloadImage(from url: URL) {
+    func downloadImage(from url: URL?) {
         image = .dowloadImagePlaceholer
+
+        guard let url else { return }
 
         DispatchQueue.global().async { [weak self] in
             if let data = try? Data(contentsOf: url) {

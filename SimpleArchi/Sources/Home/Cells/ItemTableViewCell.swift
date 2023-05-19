@@ -31,9 +31,7 @@ final class ItemCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(item: HomeViewModel.ThumbnailItem) {
-        if let imageURL = item.imageURL {
-            self.thumbnailImageView.downloadImage(from: imageURL)
-        }
+        self.thumbnailImageView.downloadImage(from: item.imageURL)
         self.urgentLabel.text = item.isUrgent ? "À saisir !" : nil
         self.titleLabel.text = item.title
         self.categoryLabel.text = item.categoryName
