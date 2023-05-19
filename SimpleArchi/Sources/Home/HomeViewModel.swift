@@ -43,27 +43,25 @@ final class HomeViewModel {
 
     // MARK: - Input
 
-    func viewDidLoad() {
+    func viewDidLoad() async {
         isLoading?(true)
         defer { isLoading?(false) }
-        
-        Task {
-            async let itemRequest = repository.getItems()
-            async let categoriesRequest = repository.getCategories()
 
-            do {
-                let (itemsResult, categoriesResult) = try await(itemRequest, categoriesRequest)
+        async let itemRequest = repository.getItems()
+        async let categoriesRequest = repository.getCategories()
 
-                let orderedItems = orderItems(items: itemsResult)
-                self.items = orderedItems
-                filters = categoriesResult.map { .init(category: $0) }
-                thumbnailItems?(orderedItems.map(mapToThumbnailItem(item:)))
+        do {
+            let (itemsResult, categoriesResult) = try await(itemRequest, categoriesRequest)
 
-                selectedFiltersCount?(0)
-                errorDescription?(nil)
-            } catch {
-                errorDescription?("Something went wrong")
-            }
+            let orderedItems = orderItems(items: itemsResult)
+            self.items = orderedItems
+            filters = categoriesResult.map { .init(category: $0) }
+            thumbnailItems?(orderedItems.map(mapToThumbnailItem(item:)))
+
+            selectedFiltersCount?(0)
+            errorDescription?(nil)
+        } catch {
+            errorDescription?("Something went wrong")
         }
     }
 
@@ -72,15 +70,7 @@ final class HomeViewModel {
             print("***** HomeViewModel: didTapOnItem: itemId \(itemId) doesn't exist ")
             return
         }
-        let detailItem = DetailedItem(
-            id: selectedItem.id,
-            title: selectedItem.title,
-            categoryName: categoryName(from: selectedItem.categoryId),
-            description: selectedItem.description,
-            price: PriceFormatter.formatToPrice(from: selectedItem.price),
-            creationDate: selectedItem.creationDate,
-            imageURL: selectedItem.imagesURL.detail
-        )
+        let detailItem = mapToDetailedItem(item: selectedItem)
         delegate?.navigateToDetail(model: detailItem)
     }
 
@@ -94,6 +84,7 @@ final class HomeViewModel {
 
     func didValidateFilters(filters: [Filter]) {
         guard let items else { return }
+        self.filters = filters
         let filteredItems = filteredItems(items: items)
         let orderedFilteredItems = orderItems(items: filteredItems)
         thumbnailItems?(orderedFilteredItems.map(mapToThumbnailItem(item:)))
@@ -104,13 +95,25 @@ final class HomeViewModel {
     // MARK: - Private
 
     private func mapToThumbnailItem(item: Item) -> ThumbnailItem {
-        return .init(
+        .init(
             id: item.id,
             title: item.title,
             categoryName: categoryName(from: item.categoryId),
             price: PriceFormatter.formatToPrice(from: item.price),
             imageURL: item.imagesURL.thumbnail,
             isUrgent: item.isUrgent
+        )
+    }
+
+    private func mapToDetailedItem(item: Item) -> DetailedItem {
+        .init(
+            id: item.id,
+            title: item.title,
+            categoryName: categoryName(from: item.categoryId),
+            description: item.description,
+            price: PriceFormatter.formatToPrice(from: item.price),
+            creationDate: item.creationDate,
+            imageURL: item.imagesURL.detail
         )
     }
 

@@ -10,4 +10,5 @@ import UIKit
 extension UIFont {
     static let mediumBold = UIFont.boldSystemFont(ofSize: 16.0)
     static let regularBold = UIFont.boldSystemFont(ofSize: 20.0)
+    static let largeBold = UIFont.boldSystemFont(ofSize: 24.0)
 }

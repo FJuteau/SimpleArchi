@@ -45,7 +45,7 @@ final class HomeRepository: HomeRepositoryType {
             throw NetworkError.invalidURL
         }
 
-        let result: Result<[GetCategoriesResponse], NetworkError> = await networkService.request(urlRequest: urlRequest)
+        let result: Result<[CategoryResponse], NetworkError> = await networkService.request(urlRequest: urlRequest)
 
         switch result {
         case let .success(response):
@@ -58,7 +58,7 @@ final class HomeRepository: HomeRepositoryType {
 
 private extension HomeViewModel.Item {
     init?(from response: ItemResponse) {
-        if response.creationDate.dateFromResponse != nil {
+        if response.creationDate.dateFromResponse == nil {
             print("***** HomeViewModel.Item: init?(from response: ItemResponse): response.creationDate is not conform to the expect format")
         }
         self.id = response.id

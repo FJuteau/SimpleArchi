@@ -16,8 +16,8 @@ final class HomeViewController: UIViewController {
     }()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
-    private let loadingView = UIView()
-    private let errorView = UIView()
+    private let loadingView = LoadingView()
+    private let errorView = ErrorView()
 
     private let dataSource = HomeTableViewDataSource()
     private let viewModel: HomeViewModel
@@ -41,8 +41,10 @@ final class HomeViewController: UIViewController {
         updateFlowLayout(for: traitCollection)
         registerCells()
         setupLayout()
-        viewModel.viewDidLoad()
         filterButton.addTarget(self, action: #selector(filtersTapped), for: .touchUpInside)
+        Task {
+            await viewModel.viewDidLoad()
+        }
     }
 
     // MARK: - Private
@@ -57,12 +59,15 @@ final class HomeViewController: UIViewController {
         }
         viewModel.isLoading = { [weak self] isLoading in
             DispatchQueue.main.async {
+                self?.loadingView.startLoading(isLoading: isLoading)
                 self?.loadingView.isHidden = !isLoading
             }
         }
         viewModel.errorDescription = { [weak self] errorDescription in
             DispatchQueue.main.async {
                 self?.errorView.isHidden = errorDescription == nil
+                guard let errorDescription else { return }
+                self?.errorView.updateErrorLabelText(with: errorDescription)
             }
         }
         viewModel.currentFilters = { [weak self] filters in
@@ -86,8 +91,8 @@ final class HomeViewController: UIViewController {
     private func setupLayout() {
         setupFiltersButton()
         setupCollectionView()
-        setupLoadingView()
         setupErrorView()
+        setupLoadingView()
         view.backgroundColor = .secondaryBackground
     }
 
@@ -116,30 +121,35 @@ final class HomeViewController: UIViewController {
         collectionView.backgroundColor = .background
     }
 
-    private func setupLoadingView() {
-        loadingView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loadingView)
-        let constraints = [
-            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
-            loadingView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            loadingView.rightAnchor.constraint(equalTo: view.rightAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        loadingView.backgroundColor = .green
-    }
-
     private func setupErrorView() {
         errorView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(errorView)
         let constraints = [
-            errorView.topAnchor.constraint(equalTo: view.topAnchor),
+            errorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             errorView.leftAnchor.constraint(equalTo: view.leftAnchor),
             errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             errorView.rightAnchor.constraint(equalTo: view.rightAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
-        errorView.backgroundColor = .red
+        errorView.isHidden = true
+        errorView.retryButtonTapped = { [weak self] in
+            Task {
+                await self?.viewModel.viewDidLoad()
+            }
+        }
+    }
+
+    private func setupLoadingView() {
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingView)
+        let constraints = [
+            loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            loadingView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        loadingView.isHidden = true
     }
 
     private let inset: CGFloat = 10
@@ -210,7 +220,6 @@ final private class HomeTableViewDataSource: NSObject, UICollectionViewDataSourc
 
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("***** HomeViewController: didSelectRowAt: \(dataSource.list[indexPath.row])")
         viewModel.didTapOnItem(itemId: dataSource.list[indexPath.row].id)
     }
 }

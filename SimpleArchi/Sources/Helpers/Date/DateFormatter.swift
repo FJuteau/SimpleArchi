@@ -10,8 +10,8 @@ import Foundation
 extension String {
     var dateFromResponse: Date? {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd’T’HH:mm:ssZ"
-        return dateFormatter.date(from: "01/16/2023")
+        dateFormatter.dateFormat = "yyyy-MM-dd’T’HH:mm:ssZZZZ"
+        return dateFormatter.date(from: self)
     }
 }
 
