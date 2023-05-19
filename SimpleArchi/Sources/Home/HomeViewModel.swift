@@ -120,7 +120,7 @@ final class HomeViewModel {
             categoryName: categoryName(from: item.categoryId),
             description: item.description,
             price: PriceFormatter.formatToPrice(from: item.price),
-            creationDate: item.creationDate,
+            creationDate: item.creationDate.formattedDescription ?? "",
             imageURL: item.imagesURL.detail
         )
     }
@@ -229,7 +229,7 @@ extension HomeViewModel {
         let categoryName: String
         let description: String
         let price: String
-        let creationDate: Date
+        let creationDate: String
         let imageURL: URL?
     }
 }
